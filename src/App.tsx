@@ -1,5 +1,5 @@
 const App = () => {
-  return <h1>hai</h1>;
+  return <img src="/logo.png" alt="aishop" width={60} height={60} />;
 };
 
 export default App;
