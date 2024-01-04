@@ -20,24 +20,6 @@ const router = createBrowserRouter([
     path: "/",
     element: <App />,
     errorElement: <ErrorPage />,
-    children: [
-      // {
-      //   path: "/product/:id",
-      //   element: <ProductDetails />,
-      // },
-      // {
-      //   path: "/cart",
-      //   element: <CartPage />,
-      // },
-      // {
-      //   path: "/search/:query",
-      //   element: <SearchPage />,
-      // },
-      // {
-      //   path: "/about",
-      //   element: <AboutPage />,
-      // },
-    ],
   },
 ]);
 
