@@ -17,8 +17,8 @@ const Navbar = () => {
   };
 
   return (
-    <header className="py-3 flex items-center justify-between md:gap-5 gap-2 md:px-40 px-2">
-      <Link to="/" className="max-md:hidden">
+    <header className="sticky top-0 dark:bg-dark bg-white py-3 flex items-center justify-between md:gap-5 gap-2 md:px-40 px-2">
+      <Link to="/" className="max-lg:hidden">
         <img src="/logo.webp" alt="aishop" width={70} height={70} />
       </Link>
 
@@ -28,7 +28,7 @@ const Navbar = () => {
           required
           type="search"
           placeholder="Search..."
-          className="md:w-96 w-full py-1 pl-9 pr-3 outline-none bg-transparent rounded-md border focus:outline-sky-500 focus:border-white/30"
+          className="lg:w-96 w-full py-1 pl-9 pr-3 outline-none bg-transparent rounded-md border border-gray-300 focus:outline-sky-500 focus:border-white/30"
         />
         <FiSearch size={22} alt="Search" className="absolute top-1.5 left-2" />
       </form>
@@ -38,7 +38,7 @@ const Navbar = () => {
           <FiShoppingCart size={22} alt="Cart" />
         </Link>
 
-        <div className="h-8 border border-white/30" />
+        <div className="h-8 border border-gray-300 dark:border-white/30" />
 
         <Link
           to="/login"
