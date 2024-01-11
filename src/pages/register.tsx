@@ -5,6 +5,7 @@ import Input from "@/components/ui/Input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { ZodType, z } from "zod";
+import toast from "react-hot-toast";
 
 type FormData = {
   username: string;
@@ -40,12 +41,15 @@ const RegisterPage = () => {
   } = useForm<FormData>({ resolver: zodResolver(schema) });
 
   const onSubmit = async (data: FormData) => {
-    const { success } = await RegisterAction({
+    const { success, message } = await RegisterAction({
       username: data.username,
       password: data.password,
     });
 
+    if (!success) return toast.error(message);
+
     if (success) {
+      toast.success(message);
       navigate("/login", { replace: true });
     }
   };

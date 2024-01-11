@@ -5,6 +5,8 @@ import Input from "@/components/ui/Input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { ZodType, z } from "zod";
+import { useCookies } from "react-cookie";
+import toast from "react-hot-toast";
 
 type FormData = {
   username: string;
@@ -12,6 +14,7 @@ type FormData = {
 };
 
 const LoginPage = () => {
+  const [_, setCookie] = useCookies(["userId"]);
   const navigate = useNavigate();
 
   const schema: ZodType<FormData> = z.object({
@@ -38,7 +41,11 @@ const LoginPage = () => {
       password: data.password,
     });
 
+    if (!success) toast.error(message);
+
     if (success) {
+      toast.success(message);
+      setCookie("userId", userId, { maxAge: 60 * 60 * 24 });
       navigate("/", { replace: true });
     }
   };
