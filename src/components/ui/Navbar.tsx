@@ -1,8 +1,11 @@
 import { useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FiSearch, FiShoppingCart } from "react-icons/fi";
+import Avatar from "./Avatar";
+import useCookie from "@/hooks/useCookie";
 
 const Navbar = () => {
+  const { cookie } = useCookie();
   const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
 
@@ -40,16 +43,24 @@ const Navbar = () => {
 
         <div className="h-8 border border-gray-300 dark:border-white/30" />
 
-        <Link
-          to="/login"
-          className="px-3 py-1 border rounded-md border-cyan-500 text-cyan-500 hover:text-cyan-500/85">
-          Sign in
-        </Link>
-        <Link
-          to="/register"
-          className="px-3 py-1 rounded-md bg-cyan-500 text-white dark:text-black hover:bg-cyan-500/85">
-          Sign up
-        </Link>
+        {cookie.userId ? (
+          <Link to="/profile">
+            <Avatar size={30} />
+          </Link>
+        ) : (
+          <>
+            <Link
+              to="/login"
+              className="px-3 py-1 border rounded-md border-cyan-500 text-cyan-500 hover:text-cyan-500/85">
+              Sign in
+            </Link>
+            <Link
+              to="/register"
+              className="px-3 py-1 rounded-md bg-cyan-500 text-white dark:text-black hover:bg-cyan-500/85">
+              Sign up
+            </Link>
+          </>
+        )}
       </div>
     </header>
   );

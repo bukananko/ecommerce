@@ -1,3 +1,5 @@
+import type { ResponseApi } from "@/types";
+
 const useFetch = async <T>(
   url: string,
   options?: RequestInit

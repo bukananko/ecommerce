@@ -2,10 +2,10 @@ import { useCookies } from "react-cookie";
 import { Navigate } from "react-router-dom";
 
 const ProtectRoute = ({
-  fallback,
+  fallback = "/",
   children,
 }: {
-  fallback: string;
+  fallback?: string;
   children: React.ReactNode;
 }) => {
   const [cookies] = useCookies(["userId"]);
