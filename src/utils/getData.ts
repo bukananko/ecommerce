@@ -1,13 +1,25 @@
-import type { User } from "@/types";
+import type { Product, User } from "@/types";
 import useFetch from "@/hooks/useFetch";
-import { useCookies } from "react-cookie";
 import { useQuery } from "@tanstack/react-query";
+import useCookie from "@/hooks/useCookie";
 
 export const getCurrentUser = () => {
-  const [cookies] = useCookies(["userId"]);
+  const { userId } = useCookie();
   return useQuery({
     queryKey: ["user"],
-    queryFn: () => useFetch<User>(`/user/${cookies.userId}`).then((res) => res.data),
+    queryFn: () => useFetch<User>(`/user/${userId}`).then((res) => res.data),
     refetchOnWindowFocus: false,
   });
+};
+
+export const getOwnedProducts = async ({
+  pageParam,
+  userId,
+}: {
+  pageParam: number;
+  userId: string;
+}) => {
+  const url = `/product/owned?skip=${10 * pageParam}&id=${userId}`;
+  const { data } = await useFetch<Product[]>(url);
+  return data;
 };

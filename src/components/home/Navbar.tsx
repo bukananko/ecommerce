@@ -1,11 +1,11 @@
 import { useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FiSearch, FiShoppingCart } from "react-icons/fi";
-import Avatar from "./Avatar";
+import Avatar from "../ui/Avatar";
 import useCookie from "@/hooks/useCookie";
 
 const Navbar = () => {
-  const { cookie } = useCookie();
+  const { userId } = useCookie();
   const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
 
@@ -20,7 +20,7 @@ const Navbar = () => {
   };
 
   return (
-    <header className="sticky top-0 dark:bg-dark bg-white py-3 flex items-center justify-between md:gap-5 gap-2 md:px-40 px-2">
+    <header className="sticky top-0 dark:bg-dark bg-white py-3 flex items-center justify-between md:gap-5 gap-2 md:px-40 px-2 z-50">
       <Link to="/" className="max-lg:hidden">
         <img src="/logo.webp" alt="aishop" width={70} height={70} />
       </Link>
@@ -43,10 +43,22 @@ const Navbar = () => {
 
         <div className="h-8 border border-gray-300 dark:border-white/30" />
 
-        {cookie.userId ? (
-          <Link to="/profile">
-            <Avatar size={30} />
-          </Link>
+        {userId ? (
+          <div className="flex items-center gap-5">
+            <button
+              type="button"
+              onClick={() => {
+                sessionStorage.setItem("isSelling", "true");
+                navigate(`/seller/${"apayak"}/manage-products`);
+              }}
+              className="text-sky-500 hover:text-sky-600 font-semibold">
+              Switch to selling
+            </button>
+
+            <Link to="/profile" title="Profile">
+              <Avatar size={30} />
+            </Link>
+          </div>
         ) : (
           <>
             <Link

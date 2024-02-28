@@ -1,43 +1,53 @@
 import { FaStore } from "react-icons/fa";
-import { Link } from "react-router-dom";
 
-const Card = ({ id, image }: { id: string; image: string }) => {
+type Props = {
+  image: string;
+  ratio?: "square";
+  title: string;
+  price: number;
+  store: string;
+  totalSoldItems: number;
+};
+
+const Card = (props: Props) => {
+  const { image, ratio, title, price, store, totalSoldItems } = props;
+
   return (
-    <div className="w-40 md:w-48 overflow-hidden mx-auto">
-      <Link to={`/product/${id}`}>
+    <div className="w-40 md:w-48 overflow-hidden max-md:mx-auto hover:scale-105 transition-all duration-300 relative group">
+      <div>
         <img
-          title="Product"
+          title={title}
           src={image}
           alt="Product"
           loading="lazy"
           width={100}
           height={100}
-          className="w-full object-contain rounded-md"
+          className={`w-full object-contain rounded-md ${
+            ratio === "square" ? "aspect-square" : ""
+          }`}
         />
-      </Link>
+      </div>
 
-      <Link
-        to={`/product/${id}`}
-        title="Product"
-        className="mt-2 space-y-1 inline-block">
-        <p className="line-clamp-2 text-sm">
-          Kursi Plastik Kursi Cafe Kursi Makan Kursi Belajar Kursi Cafe Makan -
-          Mini Pink
+      <div title={title} className="mt-2 space-y-1 inline-block">
+        <p className="line-clamp-2 text-sm">{title}</p>
+
+        <p className="font-extrabold line-clamp-1">
+          {new Intl.NumberFormat("in-ID", {
+            style: "currency",
+            currency: "IDR",
+            minimumFractionDigits: 0,
+          }).format(price)}
         </p>
-
-        <p className="font-extrabold line-clamp-1">Rp38.000.000.000</p>
 
         <div className="flex gap-1 items-center">
           <div>
             <FaStore size={15} title="Store" />
           </div>
-          <p className="text-sm line-clamp-1">
-            aishop dahkgdkag a khavsk ak kah kha k
-          </p>
+          <p className="text-sm line-clamp-1">{store}</p>
         </div>
 
-        <p className="text-sm">15 Sold</p>
-      </Link>
+        {totalSoldItems > 0 && <p className="text-sm">{totalSoldItems} Sold</p>}
+      </div>
     </div>
   );
 };

@@ -1,8 +1,9 @@
 import { forwardRef } from "react";
 
-type InputType = React.HTMLProps<HTMLInputElement> & { label: string };
+type InputType = React.ComponentProps<"input"> & { label: string };
 
-const Input = forwardRef<HTMLInputElement, InputType>((props: InputType, ref) => {
+const Input = forwardRef<HTMLInputElement, InputType>(
+  (props: InputType, ref) => {
     const { id, label, type = "text" } = props;
 
     return (

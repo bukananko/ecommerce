@@ -1,0 +1,15 @@
+export const category = [
+  "Electronics",
+  "Books",
+  "Clothing",
+  "Shoes",
+  "Accessories",
+  "Furnitures",
+  "Decoration",
+  "Toys",
+  "Foods",
+  "Healthcare",
+  "Jewelry",
+  "Cosmetics",
+  "Random",
+];

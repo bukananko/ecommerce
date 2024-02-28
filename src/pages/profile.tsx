@@ -1,5 +1,5 @@
 import Avatar from "@/components/ui/Avatar";
-import { FaStore, FaHistory } from "react-icons/fa";
+import { FaHistory } from "react-icons/fa";
 import { FiLogOut } from "react-icons/fi";
 import { BsGear, BsHeart, BsPencil, BsStar } from "react-icons/bs";
 import { getCurrentUser } from "@/utils/getData";
@@ -9,14 +9,14 @@ import { useEffect } from "react";
 
 const ProfilePage = () => {
   const { data: currentUser } = getCurrentUser();
-  const { cookie, removeCookie } = useCookie();
+  const { userId, removeCookie } = useCookie();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!cookie.userId) {
+    if (!userId) {
       navigate("/");
     }
-  }, [cookie]);
+  }, [userId]);
 
   return (
     <main className="md:px-36 px-2 py-5">
@@ -33,14 +33,6 @@ const ProfilePage = () => {
 
       <nav className="mt-5">
         <ul className="space-y-2">
-          <li>
-            <Link
-              to="/"
-              className="flex items-center gap-2 hover:bg-white/10 rounded-md w-max py-2 px-2 md:px-4">
-              <FaStore size={20} />
-              Create store
-            </Link>
-          </li>
           <li>
             <Link
               to="/"

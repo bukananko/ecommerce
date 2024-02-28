@@ -1,7 +1,7 @@
-import Navbar from "./components/ui/Navbar";
+import Navbar from "@/components/seller/Navbar";
 import { Outlet } from "react-router-dom";
 
-const App = () => {
+const SellerLayout = () => {
   return (
     <div className="space-y-3">
       <Navbar />
@@ -10,4 +10,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default SellerLayout;
