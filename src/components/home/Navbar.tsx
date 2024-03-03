@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FiSearch, FiShoppingCart } from "react-icons/fi";
 import Avatar from "../ui/Avatar";
@@ -8,6 +8,7 @@ const Navbar = () => {
   const { userId } = useCookie();
   const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
+  const [isScroll, setIsScroll] = useState<boolean>(false);
 
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -19,8 +20,21 @@ const Navbar = () => {
     }
   };
 
+  const handleBg = () => {
+    if (window.scrollY > 10) {
+      setIsScroll(true);
+    } else {
+      setIsScroll(false);
+    }
+  };
+
+  window.addEventListener("scroll", handleBg);
+
   return (
-    <header className="sticky top-0 dark:bg-dark bg-white py-3 flex items-center justify-between md:gap-5 gap-2 md:px-40 px-2 z-50">
+    <header
+      className={`fixed top-0 left-0 right-0 py-3 flex items-center justify-between md:gap-5 gap-2 md:px-40 px-2 z-50 ${
+        isScroll ? "dark:bg-dark bg-white" : "bg-transparent"
+      }`}>
       <Link to="/" className="max-lg:hidden">
         <img src="/logo.webp" alt="aishop" width={70} height={70} />
       </Link>
@@ -49,7 +63,7 @@ const Navbar = () => {
               type="button"
               onClick={() => {
                 sessionStorage.setItem("isSelling", "true");
-                navigate(`/seller/${"apayak"}/manage-products`);
+                navigate(`/dashboard/manage-products`);
               }}
               className="text-sky-500 hover:text-sky-600 font-semibold">
               Switch to selling

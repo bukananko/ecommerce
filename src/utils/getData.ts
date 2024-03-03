@@ -23,3 +23,18 @@ export const getOwnedProducts = async ({
   const { data } = await useFetch<Product[]>(url);
   return data;
 };
+
+export const getAllProducts = async ({ pageParam }: { pageParam: number }) => {
+  const url = `/product?skip=${10 * pageParam}`;
+  const { data } = await useFetch<Product[]>(url);
+  return data;
+};
+
+export const getDetailProduct = (id: string) => {
+  const url = `/product/${id}`;
+  return useQuery({
+    queryKey: [`product${id}`],
+    queryFn: () => useFetch<Product>(url).then((res) => res.data),
+    refetchOnWindowFocus: false,
+  });
+};

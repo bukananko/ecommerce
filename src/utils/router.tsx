@@ -6,9 +6,10 @@ import RegisterPage from "@/pages/register";
 import HomePage from "@/pages/home";
 import ProtectRoute from "@/helper/ProtectRoute";
 import ProfilePage from "@/pages/profile";
-import SellerLayout from "@/components/layouts/SellerLayout";
-import ManageProductsPage from "@/pages/seller/manageProducts";
-import CreateProductPage from "@/pages/seller/createProduct";
+import DashboardLayout from "@/components/layouts/DashboardLayout";
+import ManageProductsPage from "@/pages/dashboard/manageProducts";
+import CreateProductPage from "@/pages/dashboard/createProduct";
+import DetailProductPage from "@/pages/detailProduct";
 
 const router = createBrowserRouter([
   {
@@ -34,17 +35,20 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <RootLayout />,
-    errorElement: <ErrorPage />,
     children: [
       {
         path: "/",
         element: <HomePage />,
       },
+      {
+        path: "/product/:id",
+        element: <DetailProductPage />,
+      },
     ],
   },
   {
-    path: "/seller/:username",
-    element: <SellerLayout />,
+    path: "/dashboard",
+    element: <DashboardLayout />,
     errorElement: <ErrorPage />,
     children: [
       {

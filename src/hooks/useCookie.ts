@@ -4,7 +4,7 @@ const useCookie = () => {
   const [cookie, setCookie, removeCookie] = useCookies(["userId"]);
 
   return {
-    userId: cookie?.userId,
+    userId: cookie?.userId as string,
     setCookie,
     removeCookie,
   };

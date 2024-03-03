@@ -1,4 +1,6 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Love+Ya+Like+A+Sister&family=Rubik+Puddles&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -8,5 +10,68 @@
   html,
   body {
     font-family: "Poppins", sans-serif;
+  }
+
+  p {
+    overflow-wrap: anywhere;
+  }
+
+  /* Chrome, Safari, Edge, Opera */
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    appearance: none;
+  }
+}
+
+@layer components {
+  .content {
+    height: fit-content;
+    z-index: 3;
+    width: 100%;
+    max-width: 640px;
+    background-image: radial-gradient(
+        at 99% 0%,
+        hsla(190, 63%, 63%, 1) 100px,
+        transparent 60%
+      ),
+      radial-gradient(at 0% 99%, hsla(10, 90%, 64%, 1) 100px, transparent 70%);
+
+    position: absolute;
+    content: "";
+    width: 100%;
+    height: 100%;
+    filter: blur(100px) saturate(150%);
+    opacity: 0.17;
+    top: 0;
+    left: 0;
+  }
+
+  .content2 {
+    height: fit-content;
+    z-index: 3;
+    width: 100%;
+    max-width: 640px;
+    background-image: radial-gradient(
+        at 0% 100%,
+        hsla(190, 63%, 63%, 1) 100px,
+        transparent 60%
+      ),
+      radial-gradient(at 100% 0%, hsla(10, 90%, 64%, 1) 100px, transparent 70%);
+
+    position: absolute;
+    content: "";
+    width: 100%;
+    height: 100%;
+    filter: blur(100px) saturate(150%);
+    opacity: 0.17;
+    top: 0;
+    right: 0;
+  }
+
+  .font-hero {
+    font-family: "Rubik Puddles", cursive;
+    font-weight: 500;
+    font-style: normal;
   }
 }

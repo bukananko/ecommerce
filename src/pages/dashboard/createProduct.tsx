@@ -6,6 +6,7 @@ import Select from "@/components/ui/Select";
 import useFetch from "@/hooks/useFetch";
 import useCookie from "@/hooks/useCookie";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 type ProductValue = {
   name: string;
@@ -17,6 +18,7 @@ type ProductValue = {
 
 const CreateProductPage = () => {
   const { userId } = useCookie();
+  const navigate = useNavigate();
   // const [fileImage, setFileImage] = useState<FormData | null>(null);
   const [value, setValue] = useState({} as ProductValue);
   const [previewImage, setPreviewImage] = useState<string>("");
@@ -57,10 +59,11 @@ const CreateProductPage = () => {
     if (!success) toast.error(message);
 
     toast.success(message);
+    navigate("/dashboard/manage-products");
   };
 
   return (
-    <div className="md:px-36 px-2 flex gap-10 max-md:flex-col">
+    <main className="md:px-36 px-2 flex gap-10 max-md:flex-col">
       <div>
         <form onSubmit={handleSubmit} className="w-80 h-auto space-y-5">
           <Input
@@ -178,7 +181,7 @@ const CreateProductPage = () => {
           />
         </div>
       )}
-    </div>
+    </main>
   );
 };
 

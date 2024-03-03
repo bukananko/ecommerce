@@ -1,11 +1,8 @@
-import { Link, NavLink, useNavigate, useParams } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import Avatar from "@/components/ui/Avatar";
 
 const Navbar = () => {
-  const { username } = useParams();
   const navigate = useNavigate();
-
-  const currentUrl = `/seller/${username}`;
 
   return (
     <header className="sticky top-0 dark:bg-dark bg-white py-3 flex items-center justify-between md:gap-5 gap-2 md:px-40 px-2 z-50">
@@ -15,7 +12,7 @@ const Navbar = () => {
         </Link>
 
         <NavLink
-          to={`${currentUrl}/earnings`}
+          to={`/dashboard/earnings`}
           className={({ isActive }) =>
             [
               isActive ? "dark:bg-white/10" : "",
@@ -26,7 +23,7 @@ const Navbar = () => {
         </NavLink>
 
         <NavLink
-          to={`${currentUrl}/manage-products`}
+          to={`/dashboard/manage-products`}
           className={({ isActive }) =>
             [
               isActive ? "dark:bg-white/10" : "",
@@ -37,7 +34,7 @@ const Navbar = () => {
         </NavLink>
 
         <NavLink
-          to={`${currentUrl}/create-product`}
+          to={`/dashboard/create-product`}
           className={({ isActive }) =>
             [
               isActive ? "dark:bg-white/10" : "",
@@ -48,7 +45,7 @@ const Navbar = () => {
         </NavLink>
 
         <NavLink
-          to={`${currentUrl}/manage-orders`}
+          to={`/dashboard/manage-orders`}
           className={({ isActive }) =>
             [
               isActive ? "dark:bg-white/10" : "",
