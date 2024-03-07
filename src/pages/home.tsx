@@ -1,4 +1,4 @@
-import Card from "@/components/ui/Card";
+import ProductCard from "@/components/product/ProductCard";
 import { getAllProducts } from "@/utils/getData";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
@@ -32,14 +32,14 @@ const HomePage = () => {
 
       <div className="columns-2 sm:columns-3 lg:columns-4 xl:columns-5 2xl:columns-6 space-y-5">
         {products.map((product, i) => (
-          <Card
+          <ProductCard
             key={i}
             href={`/product/${product.id}`}
             price={product.price}
             store={product.owner.username}
             title={product.name}
             totalSoldItems={product.sold}
-            image={"/seblak.jpg" || product.image}
+            image={product.image}
           />
         ))}
       </div>

@@ -20,7 +20,7 @@ export type Product = {
   sold: number;
   stock: number;
   image: string;
-  category: Category;
+  category: string;
   createdAt: Date;
   updatedAt: Date;
   userId: string;
@@ -47,20 +47,4 @@ export type Reply = {
   userId: String;
   owner: User;
   commentId: string;
-};
-
-export type Category = {
-  electronics: "Electronics";
-  books: "Books";
-  clothing: "Clothing";
-  shoes: "Shoes";
-  accessories: "Accessories";
-  furnitures: "Furnitures";
-  decoration: "Decoration";
-  toys: "Toys";
-  foods: "Foods";
-  healthcare: "Healthcare";
-  jewelry: "Jewelry";
-  cosmetics: "Cosmetics";
-  random: "Random";
 };

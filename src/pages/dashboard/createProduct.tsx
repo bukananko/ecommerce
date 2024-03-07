@@ -7,6 +7,8 @@ import useFetch from "@/hooks/useFetch";
 import useCookie from "@/hooks/useCookie";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
+import { UploadImg } from "@/actions";
 
 type ProductValue = {
   name: string;
@@ -19,53 +21,41 @@ type ProductValue = {
 const CreateProductPage = () => {
   const { userId } = useCookie();
   const navigate = useNavigate();
-  // const [fileImage, setFileImage] = useState<FormData | null>(null);
+  const [fileImage, setFileImage] = useState<File | null>(null);
   const [value, setValue] = useState({} as ProductValue);
   const [previewImage, setPreviewImage] = useState<string>("");
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: async () => {
+      const image = fileImage !== null ? await UploadImg(fileImage) : null;
+
+      const { message, success } = await useFetch<ProductValue>("/product", {
+        method: "POST",
+        body: JSON.stringify({ ...value, image, userId }),
+      });
+
+      if (!success) toast.error(message);
+      toast.success(message);
+      navigate("/dashboard/manage-products");
+    },
+  });
 
   const getFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       setPreviewImage(URL.createObjectURL(e.target.files[0]));
-
-      const formData = new FormData();
-      formData.append("file", e.target.files[0]);
-      formData.append(
-        "upload_preset",
-        process.env.VITE_CLOUDINARY_UPLOAD_PRESET!
-      );
-
-      // setFileImage(formData);
+      setFileImage(e.target.files[0]);
     }
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    // const response = fileImage !== null ? await UploadImg(fileImage) : null;
-
-    // const image = {
-    // src: response?.src,
-    // width: response?.width,
-    // height: response?.height,
-    // };
-
-    const image = "sakjkbkajs";
-
-    const { message, success } = await useFetch<ProductValue>("/product", {
-      method: "POST",
-      body: JSON.stringify({ ...value, image, userId }),
-    });
-
-    if (!success) toast.error(message);
-
-    toast.success(message);
-    navigate("/dashboard/manage-products");
   };
 
   return (
     <main className="md:px-36 px-2 flex gap-10 max-md:flex-col">
       <div>
-        <form onSubmit={handleSubmit} className="w-80 h-auto space-y-5">
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            mutate();
+          }}
+          className="w-80 h-auto space-y-5">
           <Input
             label="Name"
             id="name"
@@ -76,11 +66,12 @@ const CreateProductPage = () => {
           <div className="space-y-2">
             <label htmlFor="description">Description</label>
             <textarea
+              required
               name="description"
               id="description"
               placeholder="Product description..."
               maxLength={500}
-              className="bg-gray-100 dark:bg-white/10 p-2 rounded-md outline-none h-44 w-full focus:outline-[#66C9DC] resize-none"
+              className="bg-gray-100 dark:bg-white/10 p-2 rounded-md outline-none h-44 w-full focus:outline-[#66C9DC]"
               onChange={(e) =>
                 setValue({ ...value, description: e.target.value })
               }
@@ -121,6 +112,7 @@ const CreateProductPage = () => {
               className="flex gap-2 items-center w-max cursor-pointer hover:">
               <TbPhotoPlus size={27} title="Upload Image" />
               <input
+                required
                 type="file"
                 id="file"
                 className="hidden"
@@ -136,7 +128,7 @@ const CreateProductPage = () => {
               <button
                 onClick={() => {
                   setPreviewImage("");
-                  // setFileImage(null);
+                  setFileImage(null);
                 }}
                 className="absolute -top-2 -right-2 p-2 bg-black text-white rounded-full">
                 <FaX title="Delete Image" />
@@ -154,10 +146,14 @@ const CreateProductPage = () => {
           <button
             type="submit"
             disabled={
-              !previewImage || !value.name || !value.price || !value.stock
+              isPending ||
+              !previewImage ||
+              !value.name ||
+              !value.price ||
+              !value.stock
             }
-            className="bg-blue-600 py-1 rounded-full w-full disabled:bg-blue-700 disabled:cursor-not-allowed">
-            Publish
+            className="bg-blue-600 py-1 rounded-full w-full disabled:bg-blue-800 disabled:cursor-not-allowed">
+            {isPending ? "Loading..." : "Publish"}
           </button>
         </form>
       </div>
@@ -167,7 +163,7 @@ const CreateProductPage = () => {
           <button
             onClick={() => {
               setPreviewImage("");
-              // setFileImage(null);
+              setFileImage(null);
             }}
             className="absolute -top-2 -right-2 p-2 bg-black text-white rounded-full">
             <FaX title="Delete Image" />

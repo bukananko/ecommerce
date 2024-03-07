@@ -1,14 +1,20 @@
 import type { Product } from "@/types";
 import formatCurrency from "@/utils/formatCurrency";
+import { useState } from "react";
 
-type Props = {
-  handleQty: (e: React.MouseEvent<HTMLButtonElement>) => void;
-  qty: number;
-  setQty: React.Dispatch<React.SetStateAction<number>>;
-  product: Product;
-};
+const CardSummary = ({ product }: { product: Product }) => {
+  const [qty, setQty] = useState<number>(1);
 
-const CardSummary = ({ handleQty, qty, product, setQty }: Props) => {
+  const handleQty = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (e.currentTarget.title === "increase") {
+      setQty(qty + 1);
+    } else {
+      if (qty > 1) {
+        setQty(qty - 1);
+      }
+    }
+  };
+
   return (
     <div className="w-72 sticky top-24">
       <div className="p-3 rounded-md border space-y-5">

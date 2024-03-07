@@ -12,7 +12,7 @@ type Props = {
   href: string;
 };
 
-const Card = (props: Props) => {
+const ProductCard = (props: Props) => {
   const { image, ratio, title, price, store, totalSoldItems, href } = props;
 
   return (
@@ -22,7 +22,7 @@ const Card = (props: Props) => {
           <img
             title={title}
             src={image}
-            alt="Product"
+            alt={title}
             loading="lazy"
             width={100}
             height={100}
@@ -35,12 +35,13 @@ const Card = (props: Props) => {
         </picture>
       </Link>
 
-      <Link to={href} title={title} className="mt-2 space-y-1 inline-block">
+      <Link
+        to={href}
+        title={title}
+        className="mt-2 space-y-1 inline-block w-full">
         <p className="line-clamp-2 text-sm">{title}</p>
 
-        <p className="font-extrabold line-clamp-1">
-         {formatCurrency(price)}
-        </p>
+        <p className="font-extrabold line-clamp-1">{formatCurrency(price)}</p>
 
         <div className="flex gap-1 items-center">
           <div>
@@ -55,4 +56,4 @@ const Card = (props: Props) => {
   );
 };
 
-export default Card;
+export default ProductCard;

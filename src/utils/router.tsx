@@ -10,6 +10,7 @@ import DashboardLayout from "@/components/layouts/DashboardLayout";
 import ManageProductsPage from "@/pages/dashboard/manageProducts";
 import CreateProductPage from "@/pages/dashboard/createProduct";
 import DetailProductPage from "@/pages/detailProduct";
+import EditProductPage from "@/pages/dashboard/editProduct";
 
 const router = createBrowserRouter([
   {
@@ -54,6 +55,10 @@ const router = createBrowserRouter([
       {
         path: "manage-products",
         element: <ManageProductsPage />,
+      },
+      {
+        path: "manage-products/:id",
+        element: <EditProductPage />,
       },
       {
         path: "create-product",

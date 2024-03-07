@@ -39,3 +39,22 @@ export const RegisterAction = async ({
 
   return response;
 };
+
+export const UploadImg = async (file: File) => {
+  const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
+  const uploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
+  const url = `https://api.cloudinary.com/v1_1/${cloudName}/auto/upload`;
+
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("upload_preset", uploadPreset);
+
+  const { secure_url } = await fetch(url, {
+    method: "POST",
+    body: formData,
+  }).then((res) => res.json());
+
+  console.log(secure_url);
+
+  return secure_url as string;
+};

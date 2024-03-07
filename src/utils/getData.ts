@@ -1,4 +1,4 @@
-import type { Product, User } from "@/types";
+import type { Product, User, Comment } from "@/types";
 import useFetch from "@/hooks/useFetch";
 import { useQuery } from "@tanstack/react-query";
 import useCookie from "@/hooks/useCookie";
@@ -37,4 +37,16 @@ export const getDetailProduct = (id: string) => {
     queryFn: () => useFetch<Product>(url).then((res) => res.data),
     refetchOnWindowFocus: false,
   });
+};
+
+export const getCommentsOnProduct = async ({
+  pageParam,
+  productId,
+}: {
+  pageParam: number;
+  productId: string;
+}) => {
+  const url = `/comment/${productId}?skip=${10 * pageParam}`;
+  const { data } = await useFetch<Comment[]>(url);
+  return data;
 };

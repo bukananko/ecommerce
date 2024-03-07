@@ -1,37 +1,40 @@
-const CommentCard = () => {
+import { useState } from "react";
+import Avatar from "../ui/Avatar";
+import CommentForm from "../form/CommentForm";
+import type { Product } from "@/types";
+
+type Props = {
+  username: string;
+  picture: string;
+  text: string;
+  product: Product;
+  userId: string;
+};
+
+const CommentCard = (props: Props) => {
+  const { text, username, picture, product, userId } = props;
+  const [isReply, setIsReply] = useState<boolean>(false);
+
   return (
     <div className="space-y-2 border-b border-b-white/20 pb-5">
       <div className="flex items-center gap-2">
         <picture>
-          <img
-            src="/ai3.jpg"
-            alt="selbak"
-            className="size-11 rounded-full object-cover"
-          />
+          <Avatar src={picture} className="size-9" />
         </picture>
 
-        <p className="font-semibold">ai store</p>
+        <p className="font-semibold">{username}</p>
       </div>
       <div>
-        <p>
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-          Necessitatibus, hic impedit dolores illum tenetur rerum vel expedita
-          cum. Ipsam vero at nobis iste repellendus molestias officia deleniti
-          est provident voluptates ipsum, modi nam deserunt suscipit! Doloribus
-          iure placeat adipisci omnis nam ad, deleniti, ipsum laborum
-          necessitatibus similique dolor consequatur. Nobis similique dolorum
-          voluptatem reprehenderit corrupti quam impedit repudiandae totam
-          magnam corporis eaque amet mollitia quod beatae sapiente, qui
-          aspernatur iusto necessitatibus consequuntur, libero quidem dicta.
-          Dicta, sit libero. Corrupti iure suscipit perferendis non quae velit
-          tempore, et fuga repellat quaerat, vel, neque iste consectetur illo
-          consequuntur sit culpa quos quisquam.
-        </p>
+        <p>{text}</p>
       </div>
 
-      <button type="button" className="text-blue-500">
-        Reply
-      </button>
+      {product.owner.id === userId && (
+        <button onClick={() => setIsReply(!isReply)} className="text-blue-500">
+          Reply
+        </button>
+      )}
+
+      {isReply && <CommentForm productId={product.id} />}
     </div>
   );
 };
