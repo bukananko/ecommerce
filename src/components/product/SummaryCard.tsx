@@ -2,7 +2,7 @@ import type { Product } from "@/types";
 import formatCurrency from "@/utils/formatCurrency";
 import { useState } from "react";
 
-const CardSummary = ({ product }: { product: Product }) => {
+const SummaryCard = ({ product }: { product: Product }) => {
   const [qty, setQty] = useState<number>(1);
 
   const handleQty = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -35,12 +35,19 @@ const CardSummary = ({ product }: { product: Product }) => {
               max={99999999}
               value={qty === 0 ? "" : qty}
               className="px-7 py-1 rounded-md bg-transparent border w-28 text-center"
-              onChange={(e) => setQty(Number(e.target.value))}
+              onChange={(e) =>
+                setQty(
+                  Number(e.target.value) > product.stock
+                    ? product.stock
+                    : Number(e.target.value)
+                )
+              }
             />
             <button
               onClick={handleQty}
               title="increase"
-              className="px-3 rounded-md absolute right-0 bottom-0 top-0 ">
+              disabled={qty === product.stock}
+              className="px-3 rounded-md absolute right-0 bottom-0 top-0 disabled:text-gray-400 disabled:cursor-not-allowed">
               +
             </button>
           </div>
@@ -72,4 +79,4 @@ const CardSummary = ({ product }: { product: Product }) => {
   );
 };
 
-export default CardSummary;
+export default SummaryCard;

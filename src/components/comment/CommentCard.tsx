@@ -1,41 +1,46 @@
-import { useState } from "react";
+import { useContext } from "react";
 import Avatar from "../ui/Avatar";
-import CommentForm from "../form/CommentForm";
-import type { Product } from "@/types";
+import type { Comment, Product } from "@/types";
+import { GlobalContext } from "@/utils/context";
 
 type Props = {
-  username: string;
-  picture: string;
-  text: string;
   product: Product;
   userId: string;
+  comment: Comment;
 };
 
 const CommentCard = (props: Props) => {
-  const { text, username, picture, product, userId } = props;
-  const [isReply, setIsReply] = useState<boolean>(false);
+  const { product, userId, comment } = props;
+  const { reply, setReply } = useContext(GlobalContext);
 
   return (
-    <div className="space-y-2 border-b border-b-white/20 pb-5">
+    <>
       <div className="flex items-center gap-2">
-        <picture>
-          <Avatar src={picture} className="size-9" />
-        </picture>
+        <Avatar
+          src={comment.owner.picture ?? "/profile.png"}
+          className="size-9"
+        />
 
-        <p className="font-semibold">{username}</p>
+        <p className="font-semibold">{comment.owner.username}</p>
       </div>
       <div>
-        <p>{text}</p>
+        <p>{comment.text}</p>
       </div>
 
-      {product.owner.id === userId && (
-        <button onClick={() => setIsReply(!isReply)} className="text-blue-500">
-          Reply
+      {product.owner.id === userId && !comment.reply && (
+        <button
+          onClick={() => {
+            console.log(comment.id);
+            setReply({
+              active: reply.ref !== comment.id ? true : false,
+              ref: comment.id as string,
+            });
+          }}
+          className="text-blue-500">
+          {reply.active && reply.ref === comment.id ? "Cancel" : "Reply"}
         </button>
       )}
-
-      {isReply && <CommentForm productId={product.id} />}
-    </div>
+    </>
   );
 };
 

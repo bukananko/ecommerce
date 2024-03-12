@@ -50,3 +50,15 @@ export const getCommentsOnProduct = async ({
   const { data } = await useFetch<Comment[]>(url);
   return data;
 };
+
+export const getProductsByQuery = async ({
+  pageParam,
+  query,
+}: {
+  pageParam: number;
+  query: string;
+  }) => {
+  const url = `/product/search?skip=${10 * pageParam}&query=${query}`;
+  const { data } = await useFetch<Product[]>(url);
+  return data;
+}

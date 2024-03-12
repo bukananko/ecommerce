@@ -14,6 +14,7 @@
 
   p {
     overflow-wrap: anywhere;
+    @apply whitespace-pre-line;
   }
 
   /* Chrome, Safari, Edge, Opera */

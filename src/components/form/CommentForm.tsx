@@ -1,23 +1,27 @@
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import Avatar from "../ui/Avatar";
 import { RiSendPlane2Line } from "react-icons/ri";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import useFetch from "@/hooks/useFetch";
 import toast from "react-hot-toast";
-import useCookie from "@/hooks/useCookie";
+import { GlobalContext } from "@/utils/context";
 
 type Props = {
-  productId: string;
+  productId?: string;
+  commentId?: string;
+  userId: string;
+  isReply?: boolean;
 };
 
-const CommentForm = ({ productId }: Props) => {
-  const { userId } = useCookie();
+const CommentForm = ({ productId, commentId, isReply, userId }: Props) => {
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
   const [comment, setComment] = useState<string>("");
+  const { setReply } = useContext(GlobalContext);
+  const queryClient = useQueryClient();
 
   const { mutate } = useMutation({
     mutationFn: async () => {
-      const url = `/comment/${productId}`;
+      const url = isReply ? `/reply/${commentId}` : `/comment/${productId}`;
 
       const { message, success } = await useFetch(url, {
         method: "POST",
@@ -26,6 +30,11 @@ const CommentForm = ({ productId }: Props) => {
 
       if (!success) toast.error(message);
       toast.success(message);
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["comments"],
+      });
     },
   });
 
@@ -44,13 +53,17 @@ const CommentForm = ({ productId }: Props) => {
         e.preventDefault();
         e.currentTarget.reset();
         mutate();
+        setReply({ active: false, ref: "" });
       }}
-      className="flex gap-2 items-center max-md:px-3 py-2 sticky bottom-0 bg-white dark:bg-[#121212] right-0 left-0">
+      className={`flex gap-2 items-center max-md:px-3 py-2 sticky bottom-0 bg-white dark:bg-[#121212] right-0 left-0 ${
+        isReply ? "" : "md:w-1/2"
+      }`}>
       <Avatar className="w-9 h-max" />
 
-      <div className="w-full md:w-1/2 relative flex flex-col">
+      <div className="w-full relative flex flex-col">
         <textarea
           ref={textAreaRef}
+          autoFocus={isReply}
           rows={1}
           required
           maxLength={500}

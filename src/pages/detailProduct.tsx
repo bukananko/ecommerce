@@ -1,15 +1,20 @@
 import CommentCard from "@/components/comment/CommentCard";
+import ReplyCommentCard from "@/components/comment/ReplyCommentCard";
 import CommentForm from "@/components/form/CommentForm";
-import CardSummary from "@/components/product/CardSummary";
+import SummaryCard from "@/components/product/SummaryCard";
+import Loading from "@/components/ui/Loading";
 import useCookie from "@/hooks/useCookie";
+import { GlobalContext } from "@/utils/context";
 import formatCurrency from "@/utils/formatCurrency";
 import { getCommentsOnProduct, getDetailProduct } from "@/utils/getData";
 import { useInfiniteQuery } from "@tanstack/react-query";
+import { useContext } from "react";
 import { useParams } from "react-router-dom";
 
 const DetailProductPage = () => {
   const { userId } = useCookie();
   const id = useParams().id as string;
+  const { reply } = useContext(GlobalContext);
   const { data: product, isLoading } = getDetailProduct(id!);
 
   const { data } = useInfiniteQuery({
@@ -27,7 +32,7 @@ const DetailProductPage = () => {
 
   if (isLoading)
     return (
-      <div className="flex justify-center items-center h-dvh">Loading...</div>
+      <Loading className="flex justify-center items-center h-dvh" size={40} />
     );
 
   return (
@@ -51,12 +56,12 @@ const DetailProductPage = () => {
             {formatCurrency(product?.price!)}
           </p>
 
-          <p className="whitespace-pre-line">
+          <p>
             Details: <br /> {product?.description}
           </p>
         </div>
 
-        <CardSummary product={product!} />
+        <SummaryCard product={product!} />
       </div>
 
       <div className="w-full md:px-28 px-2 space-y-5">
@@ -64,20 +69,33 @@ const DetailProductPage = () => {
 
         {comments.length > 0 ? (
           comments.map((comment, i) => (
-            <CommentCard
+            <div
               key={i}
-              userId={userId}
-              product={product!}
-              username={comment.owner.username}
-              picture={comment.owner.picture || "/profile.png"}
-              text={comment.text as string}
-            />
+              className="space-y-2 border-b border-b-white/20 pb-5 w-1/2">
+              <CommentCard
+                userId={userId}
+                product={product!}
+                comment={comment}
+              />
+
+              {comment.reply && <ReplyCommentCard reply={comment.reply} />}
+
+              {reply.active && reply.ref === comment.id && (
+                <CommentForm
+                  isReply={true}
+                  userId={userId}
+                  commentId={comment.id as string}
+                />
+              )}
+            </div>
           ))
         ) : (
           <p className="font-semibold">No reviews yet</p>
         )}
 
-        {product?.owner.id !== userId && <CommentForm productId={id} />}
+        {product?.owner.id !== userId && userId && (
+          <CommentForm userId={userId} productId={id} />
+        )}
       </div>
     </main>
   );

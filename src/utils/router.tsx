@@ -11,6 +11,7 @@ import ManageProductsPage from "@/pages/dashboard/manageProducts";
 import CreateProductPage from "@/pages/dashboard/createProduct";
 import DetailProductPage from "@/pages/detailProduct";
 import EditProductPage from "@/pages/dashboard/editProduct";
+import SearchPage from "@/pages/search";
 
 const router = createBrowserRouter([
   {
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <HomePage />,
+      },
+      {
+        path: "/search",
+        element: <SearchPage />,
       },
       {
         path: "/product/:id",
