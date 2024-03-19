@@ -37,7 +37,7 @@ const DetailProductPage = () => {
 
   return (
     <main className="space-y-20">
-      <div className="relative md:px-28 px-2 flex-1 mt-24 flex items-start justify-between gap-10 h-dvh">
+      <div className="relative md:px-28 px-2 flex-1 mt-24 flex items-start justify-between gap-10">
         <picture className="w-80">
           <img
             title={product?.name}
@@ -61,10 +61,10 @@ const DetailProductPage = () => {
           </p>
         </div>
 
-        <SummaryCard product={product!} />
+        <SummaryCard product={product!} userId={userId} />
       </div>
 
-      <div className="w-full md:px-28 px-2 space-y-5">
+      <div className="w-full md:px-28 px-2 space-y-5 pb-20">
         <h3 className="text-3xl font-bold">Reviews</h3>
 
         {comments.length > 0 ? (

@@ -12,6 +12,7 @@ import CreateProductPage from "@/pages/dashboard/createProduct";
 import DetailProductPage from "@/pages/detailProduct";
 import EditProductPage from "@/pages/dashboard/editProduct";
 import SearchPage from "@/pages/search";
+import CartPage from "@/pages/cart";
 
 const router = createBrowserRouter([
   {
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
   {
     path: "/profile",
     element: <ProfilePage />,
+  },
+  {
+    path: "/cart",
+    element: <CartPage />,
   },
   {
     path: "/",

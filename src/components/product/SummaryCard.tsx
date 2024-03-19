@@ -1,8 +1,19 @@
+import useFetch from "@/hooks/useFetch";
 import type { Product } from "@/types";
 import formatCurrency from "@/utils/formatCurrency";
+import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
-const SummaryCard = ({ product }: { product: Product }) => {
+const SummaryCard = ({
+  product,
+  userId,
+}: {
+  product: Product;
+  userId: string;
+}) => {
+  const navigate = useNavigate();
   const [qty, setQty] = useState<number>(1);
 
   const handleQty = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -15,6 +26,21 @@ const SummaryCard = ({ product }: { product: Product }) => {
     }
   };
 
+  const { mutate: handleCart, isPending } = useMutation({
+    mutationFn: async () => {
+      const { message, success } = await useFetch(`/cart/${product.id}`, {
+        method: "POST",
+        body: JSON.stringify({ qty, userId }),
+      });
+
+      if (!success) {
+        toast.error(message);
+      } else {
+        toast.success(message);
+      }
+    },
+  });
+
   return (
     <div className="w-72 sticky top-24">
       <div className="p-3 rounded-md border space-y-5">
@@ -26,7 +52,7 @@ const SummaryCard = ({ product }: { product: Product }) => {
               onClick={handleQty}
               title="decrease"
               disabled={qty === 1 || qty === 0}
-              className="px-3 rounded-md absolute left-0 top-0 bottom-0 disabled:text-gray-400 disabled:cursor-not-allowed">
+              className="px-3 rounded-md absolute left-0 top-0 bottom-0 disabled:text-gray-400">
               -
             </button>
             <input
@@ -47,7 +73,7 @@ const SummaryCard = ({ product }: { product: Product }) => {
               onClick={handleQty}
               title="increase"
               disabled={qty === product.stock}
-              className="px-3 rounded-md absolute right-0 bottom-0 top-0 disabled:text-gray-400 disabled:cursor-not-allowed">
+              className="px-3 rounded-md absolute right-0 bottom-0 top-0 disabled:text-gray-400">
               +
             </button>
           </div>
@@ -64,9 +90,11 @@ const SummaryCard = ({ product }: { product: Product }) => {
 
         <div className="flex flex-col gap-3">
           <button
+            onClick={() => (userId ? handleCart() : navigate("/login"))}
             type="button"
-            className="bg-sky-500 text-white px-4 py-2 rounded-md">
-            Add to cart
+            disabled={isPending}
+            className="bg-sky-500 text-white px-4 py-2 rounded-md disabled:opacity-70">
+            {isPending ? "Loading..." : "Add to cart"}
           </button>
           <button
             type="button"

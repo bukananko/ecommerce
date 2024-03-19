@@ -12,6 +12,10 @@
     font-family: "Poppins", sans-serif;
   }
 
+  *:disabled {
+    @apply cursor-not-allowed;
+  }
+
   p {
     overflow-wrap: anywhere;
     @apply whitespace-pre-line;

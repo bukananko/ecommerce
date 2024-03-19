@@ -48,3 +48,11 @@ export type Reply = {
   owner: User;
   commentId: string;
 };
+
+export type Cart = {
+  id: string;
+  qtyItem: number;
+  product: Product;
+  productId: string;
+  userId: string;
+};

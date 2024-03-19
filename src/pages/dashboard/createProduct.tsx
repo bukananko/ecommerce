@@ -152,7 +152,7 @@ const CreateProductPage = () => {
               !value.price ||
               !value.stock
             }
-            className="bg-blue-600 py-1 rounded-full w-full disabled:bg-blue-800 disabled:cursor-not-allowed">
+            className="bg-blue-600 py-1 rounded-full w-full disabled:bg-blue-800">
             {isPending ? "Loading..." : "Publish"}
           </button>
         </form>

@@ -1,4 +1,4 @@
-import type { Product, User, Comment } from "@/types";
+import type { Product, User, Comment, Cart } from "@/types";
 import useFetch from "@/hooks/useFetch";
 import { useQuery } from "@tanstack/react-query";
 import useCookie from "@/hooks/useCookie";
@@ -57,8 +57,20 @@ export const getProductsByQuery = async ({
 }: {
   pageParam: number;
   query: string;
-  }) => {
+}) => {
   const url = `/product/search?skip=${10 * pageParam}&query=${query}`;
   const { data } = await useFetch<Product[]>(url);
   return data;
-}
+};
+
+export const getCartByUserId = async ({
+  pageParam,
+  userId,
+}: {
+  pageParam: number;
+  userId: string;
+}) => {
+  const url = `/cart/${userId}?skip=${10 * pageParam}`;
+  const { data } = await useFetch<Cart[]>(url);
+  return data;
+};
